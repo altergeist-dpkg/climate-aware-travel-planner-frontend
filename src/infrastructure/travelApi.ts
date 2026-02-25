@@ -77,5 +77,5 @@ export async function getClimatePlan(
   }
 
   const raw: ClimatePlanApiResponse = await response.json();
-  return mapToClimatePlan(raw);
+  return mapToClimatePlan(raw, city, month.toString());
 }

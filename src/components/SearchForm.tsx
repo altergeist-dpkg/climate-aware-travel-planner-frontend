@@ -6,8 +6,8 @@ import { MONTHS, SUPPORTED_LANGUAGES } from '../domain/constants';
 import { Search } from 'lucide-react';
 
 const LANGUAGE_LABELS: Record<SupportedLanguage, string> = {
-  en: 'En',
-  es: 'Es',
+  en: 'English',
+  es: 'Spanish',
 };
 
 interface SearchFormProps {
@@ -20,7 +20,7 @@ export function SearchForm({ onSubmit, isLoading }: SearchFormProps) {
   const [month, setMonth] = useState<Month>('January');
   const [language, setLanguage] = useState<SupportedLanguage>('en');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!city.trim()) return;
     onSubmit(city.trim(), month, language);

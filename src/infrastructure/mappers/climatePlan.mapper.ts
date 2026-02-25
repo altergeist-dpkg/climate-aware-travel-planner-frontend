@@ -6,10 +6,18 @@
 import type { ClimatePlan } from '../../domain/models';
 import type { ClimatePlanApiResponse } from '../dtos/climatePlan.dto';
 
-export function mapToClimatePlan(raw: ClimatePlanApiResponse): ClimatePlan {
+function capitalizeWords(text: string): string {
+  return text
+    .toLowerCase()
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+export function mapToClimatePlan(raw: ClimatePlanApiResponse, city: string, month: string): ClimatePlan {
   return {
-    city: raw.city,
-    month: raw.month,
+    city: capitalizeWords(city),
+    month: month,
     weather: {
       temperature: raw.weather_data.temperature,
       real_feel: raw.weather_data.real_feel,
