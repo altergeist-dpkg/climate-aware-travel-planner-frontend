@@ -1,16 +1,8 @@
 "use client";
 
-import * as icons from 'lucide-react';
+import { DynamicIcon as LucideDynamicIcon } from 'lucide-react/dynamic';
+import type { IconName } from 'lucide-react/dynamic';
 import { MapPin } from 'lucide-react';
-
-/** Converts kebab-case or snake_case to PascalCase (e.g. 'sun' -> 'Sun', 'map-pin' -> 'MapPin'). */
-function toPascalCase(name: string): string {
-  if (!name || typeof name !== 'string') return '';
-  return name
-    .split(/[-_\s]+/)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join('');
-}
 
 interface DynamicIconProps {
   name: string;
@@ -19,13 +11,19 @@ interface DynamicIconProps {
 }
 
 /**
- * Renders a Lucide icon by string name. Falls back to MapPin if the icon is not found.
+ * Renders a Lucide icon by kebab-case name (e.g. 'sun', 'cloud-rain').
+ * Uses Lucide's dynamic import for smaller bundle size.
+ * Falls back to MapPin while loading or if the icon is not found.
  */
 export function DynamicIcon({ name, className, style }: DynamicIconProps) {
-  const pascalName = toPascalCase(name.trim());
-  const iconRecord = icons as unknown as Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>>;
-  const IconComponent = pascalName ? iconRecord[pascalName] : null;
-  const Icon = (typeof IconComponent === 'function' ? IconComponent : MapPin) as React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
-
-  return <Icon className={className} style={style} aria-hidden />;
+  const iconName = (name?.trim() || 'map-pin') as IconName;
+  return (
+    <LucideDynamicIcon
+      name={iconName}
+      className={className}
+      style={style}
+      aria-hidden
+      fallback={() => <MapPin className={className} style={style} aria-hidden />}
+    />
+  );
 }
