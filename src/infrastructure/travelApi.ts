@@ -1,6 +1,6 @@
 /**
  * Travel API client: fetches climate plan data from the FastAPI backend.
- * Uses native fetch only. Maps HTTP responses to Domain models and errors.
+ * Uses native fetch only. Parses API response as DTO and maps to Domain via mapper.
  * Security: backend error detail is only used for 404 and 502 responses.
  */
 
@@ -11,6 +11,8 @@ import {
   CityNotFoundError,
   ExternalServiceError,
 } from '../domain/errors';
+import type { ClimatePlanApiResponse } from './dtos/climatePlan.dto';
+import { mapToClimatePlan } from './mappers/climatePlan.mapper';
 
 const getBaseUrl = (): string => {
   const url = process.env.NEXT_PUBLIC_API_URL;
@@ -74,6 +76,6 @@ export async function getClimatePlan(
     );
   }
 
-  const data = (await response.json()) as ClimatePlan;
-  return data;
+  const raw: ClimatePlanApiResponse = await response.json();
+  return mapToClimatePlan(raw);
 }
