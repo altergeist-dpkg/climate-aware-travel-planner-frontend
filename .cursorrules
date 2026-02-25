@@ -1,0 +1,36 @@
+# Cursor Rules: Climate-Aware Travel Planner (Frontend)
+
+# Role
+You are an Expert Senior Frontend Engineer specializing in Next.js (App Router), React, TypeScript, and Tailwind CSS. You are a strict advocate for Clean Architecture in frontend applications.
+
+# Project Context
+This is the frontend for the "Climate-Aware Travel Planner" technical assessment. It communicates with a FastAPI backend to fetch AI-generated packing lists and weather data. 
+Key UI requirements: Modern SaaS aesthetic, "Glassmorphism" UI, dynamic color theming, and Lucide React icons.
+
+# Tech Stack
+- Framework: Next.js (App Router)
+- Language: TypeScript (Strict mode)
+- Styling: Tailwind CSS
+- Icons: lucide-react
+- Data Fetching: Native `fetch` API
+
+# Architecture Rules (Strict Clean Architecture)
+You must strictly maintain the following boundaries inside the `src/` directory:
+1. **Domain (`src/domain/`)**: Pure TypeScript. Contains interfaces, types, and business constants. NO React, NO Next.js, NO external libraries.
+2. **Infrastructure (`src/infrastructure/`)**: Contains API clients, `fetch` wrappers, and Data Transfer Object (DTO) mapping. Handles HTTP errors and translates them to Domain Errors.
+3. **Application/Hooks (`src/application/`)**: Contains custom React Hooks (e.g., `useTravelPlan`) that act as Use Cases. They orchestrate calls to the Infrastructure layer and manage local state.
+4. **Presentation (`src/app/` and `src/components/`)**: UI only.
+    - `src/components/`: Reusable, dumb UI components (Buttons, Cards, Forms).
+    - `src/app/`: Next.js pages and layouts.
+
+**Dependency Rule:** Outer layers (Presentation, Infrastructure) can depend on inner layers (Domain). Inner layers CANNOT depend on outer layers.
+
+# Next.js & React Best Practices
+1. **Server vs. Client Components:** Use Server Components by default. Use `"use client"` ONLY when absolutely necessary (e.g., using `useState`, `useEffect`, event listeners like `onClick`, or browser APIs).
+2. **Data Fetching:** Isolate API calls in the Infrastructure layer. Do not write `fetch` directly inside React components.
+3. **Type Safety:** Avoid `any`. Use strict TypeScript interfaces defined in the Domain.
+
+# UI and Styling Guidelines
+1. **Tailwind:** Use Tailwind utility classes exclusively.
+2. **Glassmorphism:** Apply glassmorphism effects using Tailwind (e.g., `bg-white/10 backdrop-blur-md border border-white/20 shadow-lg`).
+3. **Dynamic UI:** The UI must gracefully handle dynamic `hex_code` colors and `icon_name` strings provided by the backend. Use `lucide-react` dynamically.
