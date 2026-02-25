@@ -1,0 +1,25 @@
+# Dependencies and build output (rebuilt in image)
+node_modules
+.next
+
+# Version control
+.git
+.gitignore
+
+# Testing
+coverage
+
+# Specs and documentation
+specs
+*.md
+
+# Misc
+.env*
+.DS_Store
+*.pem
+*.tsbuildinfo
+.pnp
+.pnp.*
+.vercel
+out
+build
